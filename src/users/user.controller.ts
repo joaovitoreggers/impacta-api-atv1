@@ -6,7 +6,7 @@ import { UserModel } from "./user.model";
 export class UserController {
     constructor(private readonly userService: UserService) {}
 
-    @Get()  // Changed from '/getUsers' to just '/'
+    @Get()
     getUsers(): UserModel[] {
         return this.userService.getUsers();
     }
@@ -16,7 +16,7 @@ export class UserController {
         return this.userService.getUserByEmail(email);
     }
 
-    @Post()  // Changed from '/createUser' to just '/'
+    @Post()  
     createUser(@Body() body: { name: string; email: string; password: string }): UserModel {
         return this.userService.createUser(body.name, body.email, body.password);
     }
