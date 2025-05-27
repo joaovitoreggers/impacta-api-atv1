@@ -1,25 +1,33 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, BadRequestException, NotFoundException } from "@nestjs/common";
 import { UserModel } from "./user.model";
 
+@Injectable()
 export class UserService {
-    private users:UserModel[] = [];
+    private users: UserModel[] = [];
 
-
-      getUsers(): UserModel[] {
-        return this.users.filter(user => user.userStatus === UserModel.UserStatus.ACTVATE);
+    getUsers(): UserModel[] {
+        return this.users;
     }
 
     getUserByEmail(email: string): UserModel | null {
-        const user = this.users.find(user => user.email === email);
-        return user && user.userStatus === UserModel.UserStatus.ACTVATE ? user : null;
+        if (!email) {
+            throw new BadRequestException('Email is required');
+        }
+        
+        return this.users.find(user => user.email === email) || null;
     }
 
     createUser(name: string, email: string, password: string): UserModel {
-        const user = new UserModel(
-            name,
-            email,
-            password
-        );
+        if (!name || !email || !password) {
+            throw new BadRequestException('All fields are required');
+        }
+
+        const existingUser = this.users.find(user => user.email === email);
+        if (existingUser) {
+            throw new BadRequestException('User already exists');
+        }
+
+        const user = new UserModel(name, email, password);
         this.users.push(user);
         return user;
     }
@@ -27,8 +35,9 @@ export class UserService {
     updateUser(email: string, name?: string, password?: string): UserModel | null {
         const user = this.users.find(user => user.email === email);
         if (!user) {
-            return null;
+            throw new NotFoundException('User not found');
         }
+
         if (name) {
             user.name = name;
         }
@@ -42,12 +51,10 @@ export class UserService {
     deleteUser(email: string): boolean {
         const index = this.users.findIndex(user => user.email === email);
         if (index === -1) {
-            return false;
+            throw new NotFoundException('User not found');
         }
-        this.users[index].userStatus = UserModel.UserStatus.INACTIVE;
-        this.users[index].updatedAt = new Date();
+        
+        this.users.splice(index, 1);
         return true;
     }
-    
-        
 }

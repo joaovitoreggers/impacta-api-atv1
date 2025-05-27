@@ -1,5 +1,5 @@
 ### Listar todos os usuários
-GET http://localhost:3000/users/getUsers
+GET http://localhost:3000/users
 
 ### Buscar usuário por email
 GET http://localhost:3000/users/joao@email.com
@@ -10,7 +10,7 @@ Content-Type: application/json
 
 {
     "name": "João",
-    "email": "joao@email.com",
+    "email": "joao1@email.com",
     "password": "senha123"
 }
 
@@ -25,7 +25,3 @@ Content-Type: application/json
 
 ### Deletar usuário
 DELETE http://localhost:3000/users/joao@email.com
-
-
-
-
