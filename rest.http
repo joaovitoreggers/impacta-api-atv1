@@ -1,0 +1,31 @@
+### Listar todos os usuários
+GET http://localhost:3000/users/getUsers
+
+### Buscar usuário por email
+GET http://localhost:3000/users/joao@email.com
+
+### Criar novo usuário
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "name": "João",
+    "email": "joao@email.com",
+    "password": "senha123"
+}
+
+### Atualizar usuário
+PUT http://localhost:3000/users/joao@email.com
+Content-Type: application/json
+
+{
+    "name": "João Atualizado",
+    "password": "novasenha123"
+}
+
+### Deletar usuário
+DELETE http://localhost:3000/users/joao@email.com
+
+
+
+
